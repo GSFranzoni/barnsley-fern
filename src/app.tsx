@@ -1,4 +1,45 @@
+import { useCallback } from "react";
+
+import { Fractal } from "@/components/fractal";
+import { useGenerator } from "@/hooks/use-generator";
+import { generate } from "@/utils/fractal";
+
 export function App() {
-  return <span className="text-purple-500">React Vite Template</span>; 
-} 
-  
+  const createGenerator = useCallback(() => generate(100_000), []);
+
+  const points = useGenerator(createGenerator, 500);
+
+  return (
+    <main className="relative grid min-h-screen items-start justify-items-center overflow-hidden bg-[#07110b] px-4 pt-10 pb-8 text-emerald-50 sm:place-items-center sm:p-10">
+      <div className="pointer-events-none absolute top-0 -left-32 size-96 rounded-full bg-emerald-400/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 -bottom-40 size-128 rounded-full bg-emerald-400/10 blur-3xl" />
+
+      <section className="relative w-full max-w-2xl">
+        <header className="mb-5 flex flex-col items-start gap-3 px-1 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+          <div>
+            <p className="mb-1 text-xs font-semibold tracking-[0.28em] text-emerald-300/70 uppercase">
+              Iterated function system
+            </p>
+            <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              Barnsley fern
+            </h1>
+          </div>
+          <div className="rounded-full border border-emerald-300/15 bg-emerald-300/10 px-3 py-1.5 text-xs font-medium text-emerald-200 tabular-nums backdrop-blur-sm sm:text-right">
+            <span className="mr-1.5 inline-block size-1.5 animate-pulse rounded-full bg-emerald-300" />
+            {points.length.toLocaleString()} points
+          </div>
+        </header>
+
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-2 shadow-2xl shadow-black/30 backdrop-blur-md sm:p-3">
+          <div className="grid place-items-center overflow-hidden rounded-xl border border-emerald-200/10 bg-[#020804]">
+            <Fractal points={points} />
+          </div>
+        </div>
+
+        <p className="mt-4 text-center text-xs tracking-wide text-emerald-100/45">
+          Growing one transformation at a time
+        </p>
+      </section>
+    </main>
+  );
+}
