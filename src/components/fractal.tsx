@@ -13,8 +13,6 @@ const width = 600;
 
 const height = 700;
 
-const leafColor = "rgba(16, 185, 129, 0.12)";
-
 const toCanvasX = (x: number) => ((x + 3) / 6) * width;
 
 const toCanvasY = (y: number) => height - (y / 10) * height;
@@ -30,13 +28,20 @@ export function Fractal({ points }: Props) {
     }
 
     context.clearRect(0, 0, width, height);
-    context.fillStyle = leafColor;
+
+    context.fillStyle = getComputedStyle(document.documentElement)
+      .getPropertyValue("--color-accent")
+      .trim();
+
+    context.globalAlpha = 0.12;
 
     for (const point of points) {
       context.beginPath();
       context.arc(toCanvasX(point.xn), toCanvasY(point.yn), 1.1, 0, Math.PI * 2);
       context.fill();
     }
+
+    context.globalAlpha = 1;
   }, [points]);
 
   return (
