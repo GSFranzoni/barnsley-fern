@@ -1,13 +1,9 @@
-import { useCallback } from "react";
-
 import { Fractal } from "@/components/fractal";
 import { useGenerator } from "@/hooks/use-generator";
 import { generate } from "@/utils/fractal";
 
 export function App() {
-  const createGenerator = useCallback(() => generate(100_000), []);
-
-  const points = useGenerator(createGenerator, 500);
+  const { reset, values: points } = useGenerator(() => generate(100_000), 500);
 
   return (
     <main className="relative grid min-h-screen items-start justify-items-center overflow-hidden bg-[#07110b] px-4 pt-10 pb-8 text-emerald-50 sm:place-items-center sm:p-10">
@@ -24,9 +20,18 @@ export function App() {
               Barnsley fern
             </h1>
           </div>
-          <div className="rounded-full border border-emerald-300/15 bg-emerald-300/10 px-3 py-1.5 text-xs font-medium text-emerald-200 tabular-nums backdrop-blur-sm sm:text-right">
-            <span className="mr-1.5 inline-block size-1.5 animate-pulse rounded-full bg-emerald-300" />
-            {points.length.toLocaleString()} points
+          <div className="flex items-center gap-2">
+            <div className="rounded-full border border-emerald-300/15 bg-emerald-300/10 px-3 py-1.5 text-xs font-medium text-emerald-200 tabular-nums backdrop-blur-sm sm:text-right">
+              <span className="mr-1.5 inline-block size-1.5 animate-pulse rounded-full bg-emerald-300" />
+              {points.length.toLocaleString()} points
+            </div>
+            <button
+              className="rounded-full border border-emerald-300/25 px-3 py-1.5 text-xs font-semibold text-emerald-100 transition-colors hover:bg-emerald-300/15 focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:outline-none"
+              onClick={reset}
+              type="button"
+            >
+              Reset
+            </button>
           </div>
         </header>
 

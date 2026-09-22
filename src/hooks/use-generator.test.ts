@@ -51,19 +51,29 @@ describe("useGenerator", () => {
     const generator = () => values(1, 2, 3);
     const { act, result } = await renderHook(() => useGenerator(generator, 2));
 
-    expect(result.current).toEqual([]);
+    expect(result.current.values).toEqual([]);
 
     await act(runNextFrame);
-    expect(result.current).toEqual([1, 2]);
+    expect(result.current.values).toEqual([1, 2]);
 
     await act(runNextFrame);
-    expect(result.current).toEqual([1, 2, 3]);
+    expect(result.current.values).toEqual([1, 2, 3]);
 
     await act(runNextFrame);
     expect(frames.size).toBe(0);
   });
 
-  it("resets and starts a new stream when the generator changes", async () => {
+  it("does not restart when given an inline generator factory", async () => {
+    let created = 0;
+    const { act, result } = await renderHook(() => useGenerator(() => values(++created)));
+
+    await act(runNextFrame);
+
+    expect(result.current.values).toEqual([1]);
+    expect(created).toBe(1);
+  });
+
+  it("uses the latest generator when reset", async () => {
     const first = () => values(1);
     const second = () => values(2, 3);
     const { act, result, rerender } = await renderHook(
@@ -74,13 +84,16 @@ describe("useGenerator", () => {
     );
 
     await act(runNextFrame);
-    expect(result.current).toEqual([1]);
+    expect(result.current.values).toEqual([1]);
 
     await rerender({ generator: second });
-    expect(result.current).toEqual([]);
+    expect(result.current.values).toEqual([1]);
+
+    await act(result.current.reset);
+    expect(result.current.values).toEqual([]);
 
     await act(runNextFrame);
-    expect(result.current).toEqual([2]);
+    expect(result.current.values).toEqual([2]);
   });
 
   it("cancels the pending frame and closes the iterator on unmount", async () => {

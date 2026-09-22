@@ -1,10 +1,20 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export function useGenerator<T>(createGenerator: () => Iterator<T>, batchSize = 1) {
+  const generatorRef = useRef(createGenerator);
+
   const [values, setValues] = useState<T[]>([]);
 
+  const [generation, setGeneration] = useState(0);
+
+  const reset = useCallback(() => setGeneration((current) => current + 1), []);
+
   useEffect(() => {
-    const iterator = createGenerator();
+    generatorRef.current = createGenerator;
+  }, [createGenerator]);
+
+  useEffect(() => {
+    const iterator = generatorRef.current();
 
     let frameId: number;
 
@@ -38,7 +48,7 @@ export function useGenerator<T>(createGenerator: () => Iterator<T>, batchSize = 
       cancelAnimationFrame(frameId);
       iterator.return?.();
     };
-  }, [createGenerator, batchSize]);
+  }, [batchSize, generation]);
 
-  return values;
+  return { reset, values };
 }
