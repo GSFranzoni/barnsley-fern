@@ -40,7 +40,7 @@ export function Fractal({ points }: Props) {
   }, [points]);
 
   return (
-    <canvas className="block h-auto w-full max-w-[600px]" height={height} ref={canvasRef} width={width}>
+    <canvas className="block h-auto w-full max-w-150" height={height} ref={canvasRef} width={width}>
       Your browser does not support canvas.
     </canvas>
   );
