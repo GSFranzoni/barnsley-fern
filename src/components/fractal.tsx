@@ -29,9 +29,9 @@ export function Fractal({ points }: Props) {
 
     context.clearRect(0, 0, width, height);
 
-    context.fillStyle = getComputedStyle(document.documentElement)
-      .getPropertyValue("--color-accent")
-      .trim();
+    context.fillStyle =
+      getComputedStyle(document.documentElement).getPropertyValue("--color-accent").trim() ||
+      "#07875f";
 
     context.globalAlpha = 0.12;
 
