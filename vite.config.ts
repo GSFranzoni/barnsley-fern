@@ -19,7 +19,6 @@ const getBase = () => {
   return "/";
 };
 
-// https://vite.dev/config/
 export default defineConfig({
   base: getBase(),
   plugins: [react(), babel({ presets: [reactCompilerPreset()] }), tailwindcss()],
