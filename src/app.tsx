@@ -6,7 +6,7 @@ export function App() {
   const { reset, values: points } = useGenerator(() => generate(100_000), 250);
 
   return (
-    <main className="relative grid min-h-screen items-start justify-items-center overflow-hidden bg-[#07110b] px-4 pt-10 pb-8 text-emerald-50 sm:place-items-center sm:p-10">
+    <main className="relative grid min-h-screen items-start justify-items-center overflow-hidden px-4 pt-10 pb-8 text-emerald-50 sm:place-items-center sm:p-10">
       <div className="pointer-events-none absolute top-0 -left-32 size-96 rounded-full bg-emerald-400/10 blur-3xl" />
       <div className="pointer-events-none absolute -right-24 -bottom-40 size-128 rounded-full bg-emerald-400/10 blur-3xl" />
 
