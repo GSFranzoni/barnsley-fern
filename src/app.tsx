@@ -3,7 +3,7 @@ import { useGenerator } from "@/hooks/use-generator";
 import { generate } from "@/utils/fractal";
 
 export function App() {
-  const { reset, values: points } = useGenerator(() => generate(100_000), 500);
+  const { reset, values: points } = useGenerator(() => generate(100_000), 250);
 
   return (
     <main className="relative grid min-h-screen items-start justify-items-center overflow-hidden bg-[#07110b] px-4 pt-10 pb-8 text-emerald-50 sm:place-items-center sm:p-10">
